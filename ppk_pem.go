@@ -12,7 +12,7 @@ func exportPubKeyAsPEMString(publickey *rsa.PublicKey) string {
 	publickeyPEM := string(pem.EncodeToMemory(
 		&pem.Block{
 			Type:  "RSA PUBLIC KEY",
-			Bytes: x509.MarshalPKCS1PrivateKey(publickey),
+			Bytes: x509.MarshalPKCS1PublicKey(publickey),
 		},
 	))
 	return publickeyPEM
@@ -30,7 +30,10 @@ func exportPrivKeyAsPEMString(privatekey *rsa.PrivateKey) string {
 
 func saveKeyToAFile(keyPEM, filename string) {
 	pemBytes := []byte(keyPEM)
-	ioutil.WriteFile(filename, pemBytes, 0400)
+	err := ioutil.WriteFile(filename, pemBytes, 0400)
+	if err != nil {
+		return
+	}
 }
 
 func main() {
