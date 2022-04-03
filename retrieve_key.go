@@ -4,6 +4,8 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"fmt"
+	"io/ioutil"
 )
 
 func exportPEMStringToPrivateKey(privatekey []byte) *rsa.PrivateKey {
@@ -19,5 +21,12 @@ func exportPEMStringToPublicKey(publickey []byte) *rsa.PublicKey {
 }
 
 func readKeyFromFile(filename string) []byte {
+	key, _ := ioutil.ReadFile(filename)
+	return key
+}
 
+func main() {
+	privateKeyPEM := readKeyFromFile("privatekey.pem")
+	privateKeyFile := exportPEMStringToPrivateKey(privateKeyPEM)
+	fmt.Printf("Private Key: %v\n", privateKeyFile)
 }
